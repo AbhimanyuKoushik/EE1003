@@ -47,9 +47,8 @@ x_values = np.arange(lowerbound + stepsize, upperbound + stepsize, stepsize)
 y_function = -0.5 * x_values**2
 
 # Plot the data
-plt.scatter(x_values, results, color='blue', s=1, label='Scatter Data')
-plt.plot(x_values, y_function, color='red', label='y = -1/2 * x^2')
-plt.title('Differential Equation Solution and Function Comparison')
+plt.scatter(x_values, results, color='blue', s=1, label='Sim.')
+plt.plot(x_values, y_function, color='red', label='Theory')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.legend()
