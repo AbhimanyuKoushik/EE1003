@@ -76,7 +76,7 @@ Theoritical Solution:
 	\int_{}^{}\frac{d^2y}{dx^2}dx &= \int_{}^{}-1dx\\
 	\frac{dy}{dx} &= -x+c_1\\
 	\int_{}^{}\frac{dy}{dx}dx &= \int_{}^{}\brak{-x+c_1}dx\\
-	y &= \frac{-x^2}{2}+{c_1}x+c_2\\
+	y &= \frac{-x^2}{2}+{c_1}x+c_2
 \end{align}
 Substituting the initial conditions gives
 \begin{align}
@@ -85,7 +85,10 @@ Substituting the initial conditions gives
 	y^{\prime}\brak{0} = 0 &\implies -0+c_1 = 0\\
 	c_1 &= 0
 \end{align}
-The theoritical solution is $f\brak{x} = \frac{-x^2}{2}$\\
+The theoritical solution is 
+\begin{align}
+	f\brak{x} = \frac{-x^2}{2}
+\end{align}
 \newline
 Computational Solution:\newline
 Consider the given linear differential equation
@@ -95,36 +98,39 @@ Consider the given linear differential equation
 Where $y^{i}$ is the $i$th derivative of the function then
 \begin{align}
 	y^{\prime}\brak{t} = \lim_{h\to 0}\frac{y\brak{t+h} - y\brak{t}}{h}\\
-	y\brak{t+h} = y\brak{t} + hy^{\prime}\brak{t}\\
+	y\brak{t+h} = y\brak{t} + hy^{\prime}\brak{t}
 \end{align}
 Similarly
 \begin{align}
 	y^{i}\brak{t+h} &= y^{i}\brak{t} + hy^{i+1}\brak{t}\\
 	y^{n-1}\brak{t+h} &= y^{n-1}\brak{t} + hy^{n}\brak{t}\\
-	y^{n-1}\brak{t+h} &= y^{n-1}\brak{t} + h\brak{-\frac{a_{n-1}}{a_n}y^{n-1}-\frac{a_{n-2}}{a_n}y^{n-2} - \dots -\frac{a_{0}}{a_n}y - \frac{c}{a_n}}\\
+	y^{n-1}\brak{t+h} &= y^{n-1}\brak{t} + h\brak{-\frac{a_{n-1}}{a_n}y^{n-1}-\frac{a_{n-2}}{a_n}y^{n-2} - \dots -\frac{a_{0}}{a_n}y - \frac{c}{a_n}}
 \end{align}
 Where i ranges from 0 to $n-1$\\
+\begin{align}
+	\vec{y}\brak{t+h} = \vec{y}\brak{t} + \myvec{0 & 0 & 0 & 0 & \dots & 0 & 0\\ 0 & 0 & 1 & 0 & \dots & 0 & 0\\0 & 0 & 0 & 1 & \dots & 0 & 0\\\vdots & \vdots & \vdots & \vdots& \ddots & \vdots & \vdots\\
+	0 & 0 & 0 & 0 & \dots & 0 & 1\\-\frac{1}{a_n} & -\frac{a_0}{a_n} & -\frac{a_1}{a_n} & -\frac{a_2}{a_n} & \dots & -\frac{a_{n-2}}{a_n} & -\frac{a_{n-1}}{a_n}}\brak{h\vec{y}\brak{t}}\\
+	\vec{y}\brak{t+h} = \myvec{1 & 0 & 0 & 0 & \dots & 0 & 0\\ 0 & 1 & h & 0 & \dots & 0 & 0\\0 & 0 & 1 & h & \dots & 0 & 0\\\vdots & \vdots & \vdots & \vdots& \ddots & \vdots & \vdots\\
+	0 & 0 & 0 & 0 & \dots & 1 & h\\-\frac{h}{a_n} & -\frac{a_0h}{a_n} & -\frac{a_1h}{a_n} & -\frac{a_2h}{a_n} & \dots & -\frac{a_{n-2}h}{a_n} & 1-\frac{a_{n-1}h}{a_n}}\brak{\vec{y}\brak{t}}
+\end{align}
 Discretizing the steps gives us
 \begin{align}
-	y_{k+1} &= y_k + hy^{\prime}_k\\
-	y^{\prime}_{k+1} &= y^{\prime}_k + hy^{\prime\prime}_k\\
-	&\vdots\\
-	y^{n-2}_{k+1} &= y^{n-2}_{k} + hy^{n-1}_{k}\\
-	y^{n-1}\brak{t+h} &= y^{n-1}\brak{t} + h\brak{-\frac{a_{n-1}}{a_n}y^{n-1}-\frac{a_{n-2}}{a_n}y^{n-2} - \dots -\frac{a_{0}}{a_n}y - \frac{c}{a_n}}
+	\vec{y}_{k+1} = \myvec{1 & 0 & 0 & 0 & \dots & 0 & 0\\ 0 & 1 & h & 0 & \dots & 0 & 0\\0 & 0 & 1 & h & \dots & 0 & 0\\\vdots & \vdots & \vdots & \vdots& \ddots & \vdots & \vdots\\
+	0 & 0 & 0 & 0 & \dots & 1 & h\\-\frac{h}{a_n} & -\frac{a_0h}{a_n} & -\frac{a_1h}{a_n} & -\frac{a_2h}{a_n} & \dots & -\frac{a_{n-2}h}{a_n} & 1-\frac{a_{n-1}h}{a_n}}\brak{\vec{y}_{k}}
 \end{align}
 where $k$ ranges from 0 to number of data points with $y^{i}_0$ being the given initial condition.\\
 For the given question\\
 \begin{align}
-	y\brak{t+h} &= y\brak{t} + hy^{\prime}\brak{t}\\
-	y^{\prime}\brak{t+h} &= y^{\prime}\brak{t} + hy^{\prime\prime}\brak{t}\\
-	y_{k+1} &= y_k + hy^{\prime}_k\\
-	y^{\prime}_{k+1} &= y^{\prime}_k + hy^{\prime\prime}_k\\
-	y^{\prime}_{k+1} &= y^{\prime}_k - h
+	\vec{y}_{k+1} = \myvec{1 & 0 & 0\\ 0 & 1 & h\\ -h & 0 & 1}\vec{y}_k
 \end{align}
-Record the $y_k$ for $x_k =lowerbound+kh$ and then plot the graph. The result will be as given below.
+Record the $y_k$ for 
+\begin{align}
+x_k =lowerbound+kh
+\end{align}
+and then plot the graph. The result will be as given below.
 \begin{figure}[h!]
    \centering
-   \includegraphics[width=1\linewidth]{figs/fig.png}
+   \includegraphics[width=\columnwidth]{figs/fig.png}
    \caption{Comparison between the Theoritical solution and Computational solution}
    \label{stemplot}
 \end{figure}
