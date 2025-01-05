@@ -78,7 +78,7 @@ Properties of Laplace tranform
 \begin{align}
 	\mathcal{L}\brak{y^{\prime\prime}} &= s^2\mathcal{L}\brak{y} -sy\brak{0}-y^\prime\brak{0}\\
 	\mathcal{L}\brak{1} &= \frac{1}{s}\\
-	\mathcal{L}^{-1}\brak{\frac{2}{s^3}} &= x^2\\
+	\mathcal{L}^{-1}\brak{\frac{2}{s^3}} &= x^2u\brak{x}\\
 	\mathcal{L}\brak{cf\brak{t}} &= c\mathcal{L}\brak{f\brak{t}}
 \end{align}
 Applying the properties to the given equation
@@ -93,11 +93,11 @@ Substituting the initial conditions gives
 	\mathcal{L}\brak{y} &= \frac{-1}{s^3}\\
 	y &= \mathcal{L}^{-1}\brak{\frac{-1}{s^3}}\\
 	y &= \frac{-1}{2}\mathcal{L}^{-1}\brak{\frac{2}{s^3}}\\
-	y &= \frac{-1}{2}s^2
+	y &= \frac{-1}{2}x^2u\brak{x}
 \end{align}
 The theoritical solution is 
 \begin{align}
-	f\brak{x} = \frac{-x^2}{2}
+	f\brak{x} = \frac{-x^2}{2}u\brak{x}
 \end{align}
 \newline
 Computational Solution:\newline
