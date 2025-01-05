@@ -69,21 +69,31 @@ Solve the differential equation $\frac{d^2y}{dx^2} + 1 = 0$ with initial conditi
   \label{tab1.1.2.2}
 \end{table}
 \newline
-Theoritical Solution:
+Theoritical Solution:\\
+Laplace Transform definition\\
 \begin{align}
-	\frac{d^2y}{dx^2} + 1 &= 0\\
-	\frac{d^2y}{dx^2} &= -1\\
-	\int_{}^{}\frac{d^2y}{dx^2}dx &= \int_{}^{}-1dx\\
-	\frac{dy}{dx} &= -x+c_1\\
-	\int_{}^{}\frac{dy}{dx}dx &= \int_{}^{}\brak{-x+c_1}dx\\
-	y &= \frac{-x^2}{2}+{c_1}x+c_2
+	\mathcal{L}\brak{f\brak{t}} = \int_{0}^{\infty}e^{-st}f\brak{t}dt
+\end{align}
+Properties of Laplace tranform
+\begin{align}
+	\mathcal{L}\brak{y^{\prime\prime}} &= s^2\mathcal{L}\brak{y} -sy\brak{0}-y^\prime\brak{0}\\
+	\mathcal{L}\brak{1} &= \frac{1}{s}\\
+	\mathcal{L}^{-1}\brak{\frac{2}{s^3}} &= x^2\\
+	\mathcal{L}\brak{cf\brak{t}} &= c\mathcal{L}\brak{f\brak{t}}
+\end{align}
+Applying the properties to the given equation
+\begin{align}
+	y^{\prime\prime} + 1 &= 0\\
+	\mathcal{L}\brak{y^{\prime\prime}} + \mathcal{L}\brak{1} &= 0\\
+	s^2\mathcal{L}\brak{y} -sy\brak{0}-y^\prime\brak{0}+\frac{1}{s} &= 0\\
 \end{align}
 Substituting the initial conditions gives
 \begin{align}
-	y\brak{0} = 0 &\implies \frac{-0^2}{2}+{c_1}0+c_2 = 0\\
-	c_2 &= 0\\
-	y^{\prime}\brak{0} = 0 &\implies -0+c_1 = 0\\
-	c_1 &= 0
+	s^3\mathcal{L}\brak{y} + 1 &= 0\\
+	\mathcal{L}\brak{y} &= \frac{-1}{s^3}\\
+	y &= \mathcal{L}^{-1}\brak{\frac{-1}{s^3}}\\
+	y &= \frac{-1}{2}\mathcal{L}^{-1}\brak{\frac{2}{s^3}}\\
+	y &= \frac{-1}{2}s^2
 \end{align}
 The theoritical solution is 
 \begin{align}
@@ -118,7 +128,7 @@ Discretizing the steps gives us
 	\vec{y}_{k+1} = \myvec{1 & 0 & 0 & 0 & \dots & 0 & 0\\ 0 & 1 & h & 0 & \dots & 0 & 0\\0 & 0 & 1 & h & \dots & 0 & 0\\\vdots & \vdots & \vdots & \vdots& \ddots & \vdots & \vdots\\
 	0 & 0 & 0 & 0 & \dots & 1 & h\\-\frac{h}{a_n} & -\frac{a_0h}{a_n} & -\frac{a_1h}{a_n} & -\frac{a_2h}{a_n} & \dots & -\frac{a_{n-2}h}{a_n} & 1-\frac{a_{n-1}h}{a_n}}\brak{\vec{y}_{k}}
 \end{align}
-where $k$ ranges from 0 to number of data points with $y^{i}_0$ being the given initial condition.\\
+where $k$ ranges from 0 to number of data points with $y^{i}_0$ being the given initial condition and vector $\vec{y}_0 = \myvec{c\\y\brak{0}\\y^\prime\brak{0}\\\vdots\\y^{n-1}\brak{0}}$\\
 For the given question\\
 \begin{align}
 	\vec{y}_{k+1} = \myvec{1 & 0 & 0\\ 0 & 1 & h\\ -h & 0 & 1}\vec{y}_k
