@@ -1,6 +1,7 @@
 import ctypes
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 # Load the shared library
 solver = ctypes.CDLL('./solver.so')
@@ -17,12 +18,14 @@ solver.recorddata.argtypes = [
 ]
 
 # Define parameters
-order = 2
+order =1
 lowerbound = 0.0
 upperbound = 10.0
 stepsize = 0.001
-coefficients = np.array([1.0, 0.0, 0.0, 1.0], dtype=np.double) 
-initialconditions = np.array([0.0, 0.0], dtype=np.double)
+y_0 = 20000
+k = (((5/4)**(1/5000)) - 1)/0.001
+coefficients = np.array([1.0, -k, 0.0], dtype=np.double) 
+initialconditions = np.array([y_0, k*y_0], dtype=np.double)
 
 # Calculate the number of data points
 no_datapoints = int((upperbound - lowerbound) / stepsize)
@@ -43,8 +46,8 @@ results = np.ctypeslib.as_array(results_ptr, shape=(no_datapoints,))
 # Generate x-values for plotting
 x_values = np.arange(lowerbound + stepsize, upperbound + stepsize, stepsize)
 
-# Calculate the y-values for the function y = -1/2 * x^2
-y_function = -0.5 * x_values**2
+# Calculate the y-values for the function y = e^x(cos(x)-sin(x))
+y_function = 20000*((5/4)**(x_values/5))
 
 # Plot the data
 plt.scatter(x_values, results, color='blue', s=1, label='Sim.')
