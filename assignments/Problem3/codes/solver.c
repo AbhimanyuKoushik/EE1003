@@ -18,8 +18,7 @@ double** matrixgen(int order, double coefficients[order+2], double stepsize){
 	for(int i=1; i<order+1; i++){
 		outputmatrix[order][i] = (-coefficients[order+1-i]/coefficients[0])*stepsize;
 	}
-	outputmatrix[order][order] += 1;
-	printMat(outputmatrix,order+1,order+1);
+	outputmatrix[order][order] += 1; 
 	//changing the last row elements
 	return outputmatrix;
 }
@@ -45,15 +44,14 @@ double* recorddata(double lowerbound, double upperbound, int order,  double coef
 	}
 	return yvalues;
 }
-
 int main(){
-    int order = 1; //The differential which I have to solve is y''-2y'+2y = 0
-    double coefficients[] = {1.0, -((pow((5.0/4),(1.0/5000)) - 1)/0.001), 0.0};
-    double initialconditions[] = {20000.0, 20000.0*(((pow((5.0/4),(1.0/5000)) - 1)/0.001))}; //Took initial conditions as y(0) = 1, y'(0) = 0 
+    int order = 2; //The differential which I have to solve is y''+1 = 0
+    double coefficients[] = {1.0, 0.0, 0.0, 1.0};
+    double initialconditions[] = {0.0, 0.0}; //Took initial conditions as y(0) = 0, y'(0) = 0 
     double lowerbound = 0.0;
     double upperbound = 10.0;
     //taking the datapoints between 0 and 10
-    double stepsize = 0.1;// h = 0.001
+    double stepsize = 0.1;// h = 0.01
 
     // Record data using the provided recorddata function
     double* results = recorddata(lowerbound, upperbound, order, coefficients, initialconditions, stepsize);
@@ -67,3 +65,5 @@ int main(){
 
     return 0;
 }
+
+
