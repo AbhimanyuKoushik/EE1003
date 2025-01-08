@@ -58,7 +58,42 @@ The curve $\abs{x} + \abs{y} = 1$ consists of 4 lines
 	x-y&=1\\
 	-x-y&=1
 \end{align}
-These lines intersect at points \brak{1,0}, \brak{-1,0}, \brak{0,1} and \brak{0,-1} forming a square. To find the area we can integrate $x+y=1$ from $x=0$ to $x=1$ and then multiply the area by 4 to get the total area   
+Solving the line equations\newline
+Let the line equations be $\vec{x} = \vec{h}_1 + \kappa_1\vec{m}_1$ and $\vec{x} = \vec{h}_2 + \kappa_2\vec{m}_2$ then
+\begin{align}
+	\vec{h}_2 + \kappa_2\vec{m}_2 &= \vec{h}_1 + \kappa_1\vec{m}_1\\
+	\vec{h}_1 - \vec{h}_2 &=  \kappa_2\vec{m}_2 - \kappa_1\vec{m}_1\\
+	\vec{h}_1 - \vec{h}_2 &= \myvec{\vec{m}_2 & -\vec{m_1}}\myvec{\kappa_2\\\kappa_1}
+\end{align}
+Solving the equation using row reduction gives the value of $\kappa_1$ and $\kappa_2$ which can be subsituted in line equation to get the point\newline
+For the given lines, the values of $\vec{m}$ and $\vec{h}$ are
+\begin{align}
+	\vec{m}_1 = \myvec{-1\\1}\\
+	\vec{m}_2 = \myvec{1\\1}\\
+	\vec{m}_3 = \myvec{1\\1}\\
+	\vec{m}_4 = \myvec{-1\\1}\\
+	\vec{h}_1 = \myvec{1\\0}\\
+	\vec{h}_2 = \myvec{0\\1}\\
+	\vec{h}_3 = \myvec{0\\-1}\\
+	\vec{h}_4 = \myvec{-1\\0}
+\end{align}
+The matrix equations we get for lines \brak{1,2} is
+\begin{align}
+	\myvec{1\\-1} = \myvec{1 & 1\\1 & -1}\myvec{\kappa_2\\\kappa_1}
+\end{align}
+The augmented matrix for this will be
+\begin{align}
+  \myvec{1 & 1 & 1\\1 & -1 & -1}  &\xleftrightarrow[]{R_2 \leftarrow {R_1-R_2}}\myvec{1 & 1 & 1 \\0 & 2 & 2}\\
+  &\xleftrightarrow[]{R_1 \leftarrow {R_1-\frac{R_2}{2}}}\myvec{1 & 0 & 0 \\0 & 2 & 2}\\
+  &\xleftrightarrow[]{R_2 \leftarrow {\frac{R_2}{2}}}\myvec{1 & 0 & 0 \\0 & 1 & 1}\\
+  \kappa_1 &= 1
+\end{align}
+Substituting $\kappa_1$ in line equation gives first intersection point to be
+\begin{align}
+	\vec{x}_1 = \myvec{1\\0} + \myvec{-1\\1}\\
+	\vec{x}_1 = \myvec{0\\1}
+\end{align}
+Similarly the other intersection points are \brak{1,0}, \brak{-1,0}, and \brak{0,-1} forming a square. To find the area we can integrate $x+y=1$ from $x=0$ to $x=1$ and then multiply the area by 4 to get the total area   
 \begin{align}
 	A_0 &= \int_{0}^{1}\brak{1-x}dx\\
 	A_0 &= \brak{x-\frac{x^2}{2}}\Big|_0^1\\
@@ -101,6 +136,7 @@ General Difference Equation will be given by,
   x_{n+1}&=x_n+h
 \end{align}
 Iterating till we reach $x_n=1$ will return required area. Note, Area obtained is to be multiplied by $4$ as the calculated area only accounts for one quater of the graph.\newline
+The calculated area is $4\times 0.5$ which is $2$.
 \begin{figure}[h!]
    \centering
    \includegraphics[width=1\columnwidth]{figs/fig.png}
