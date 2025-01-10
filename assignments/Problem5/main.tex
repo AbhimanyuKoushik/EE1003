@@ -93,9 +93,12 @@ The theoritical solution is
 \begin{align}
 	f\brak{x} = \frac{1}{2}\brak{e^{-x}+e^{x}}u\brak{x}
 \end{align}
-We can arrive at a difference equation by applying Bilinear Z-transform on the Laplace equations
+We can arrive at a difference equation by applying Bilinear Z-transform on the Laplace equations. Take
 \begin{align}
-	s &= \frac{2}{T}\brak{\frac{1-z^{-1}}{1+z^{-1}}}\\
+	s &= \frac{2}{T}\brak{\frac{1-z^{-1}}{1+z^{-1}}}
+\end{align}
+Here $T = h$
+\begin{align}
 	Y\brak{z} &= \frac{1}{2}\brak{\frac{1}{\frac{2}{T}\brak{\frac{1-z^{-1}}{1+z^{-1}}}+1}+\frac{1}{\frac{2}{T}\brak{\frac{1-z^{-1}}{1+z^{-1}}}-1}}\\
 	Y\brak{z} &= \frac{1}{2}\brak{\frac{T\brak{1+z^{-1}}}{2\brak{1-z^{-1}}+T\brak{1+z^{-1}}}+\frac{T\brak{1+z^{-1}}}{2\brak{1-z^{-1}}-T\brak{1+z^{-1}}}}\\
 	Y\brak{z} &= \frac{1}{2}\brak{\frac{T\brak{1+z^{-1}}}{\brak{T-2}z^{-1}+\brak{T+2}} - \frac{T\brak{1+z^{-1}}}{\brak{T+2}z^{-1}+\brak{T-2}}}\\
