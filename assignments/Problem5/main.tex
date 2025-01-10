@@ -93,7 +93,43 @@ The theoritical solution is
 \begin{align}
 	f\brak{x} = \frac{1}{2}\brak{e^{-x}+e^{x}}u\brak{x}
 \end{align}
-\newline
+We can arrive at a difference equation by applying Bilinear Z-transform on the Laplace equations
+\begin{align}
+	s &= \frac{2}{T}\brak{\frac{1-z^{-1}}{1+z^{-1}}}\\
+	Y\brak{z} &= \frac{1}{2}\brak{\frac{1}{\frac{2}{T}\brak{\frac{1-z^{-1}}{1+z^{-1}}}+1}+\frac{1}{\frac{2}{T}\brak{\frac{1-z^{-1}}{1+z^{-1}}}-1}}\\
+	Y\brak{z} &= \frac{1}{2}\brak{\frac{T\brak{1+z^{-1}}}{2\brak{1-z^{-1}}+T\brak{1+z^{-1}}}+\frac{T\brak{1+z^{-1}}}{2\brak{1-z^{-1}}-T\brak{1+z^{-1}}}}\\
+	Y\brak{z} &= \frac{1}{2}\brak{\frac{T\brak{1+z^{-1}}}{\brak{T-2}z^{-1}+\brak{T+2}} - \frac{T\brak{1+z^{-1}}}{\brak{T+2}z^{-1}+\brak{T-2}}}\\
+	\alpha_1 &= -\frac{T-2}{T+2}\\
+	\alpha_2 &= -\frac{T+2}{T-2}\\ 
+	Y\brak{z} &= \frac{T}{2\brak{T+2}}\brak{\frac{1}{1-\alpha_1z^{-1}}+\frac{z^{-1}}{1-\alpha_1z^{-1}}}-\frac{T}{2\brak{T-2}}\brak{\frac{1}{1-\alpha_2z^{-1}}+\frac{z^{-1}}{1-\alpha_2z^{-1}}}
+\end{align}
+The radius of convergence of $\frac{1}{1-\alpha_1z^{-1}}$ and $\frac{z^{-1}}{1-\alpha_1z^{-1}}$ is $\abs{z}>\abs{\alpha_1}$ and radius of convergence of $\frac{1}{1-\alpha_2z^{-1}}$ and $\frac{z^{-1}}{1-\alpha_2z^{-1}}$ is $\abs{z}>\abs{\alpha_2}$\\
+The radius of convergence of $Y\brak{z}$ is $max\brak{\abs{\alpha_1},\abs{\alpha_2}}$\newline
+Applying the inverse Z-transform with some rearrangement gives
+\begin{align}
+	\brak{1-\alpha_1z^{-1}}\brak{1-\alpha_2z^{-1}}Y\brak{z} = \frac{T}{2}\brak{1+z^{-1}}\brak{\frac{1-\alpha_2z^{-1}}{T+2}-\frac{1-\alpha_1z^{-1}}{T-2}}\\
+	\brak{1-\brak{\alpha_1+\alpha_2}z^{-1}+z^{-2}}Y\brak{z} = \frac{T}{2}\brak{\frac{1-\brak{\alpha_2-1}z^{-1}-\alpha_2z^{-2}}{T+2}}\nonumber \\
+  \qquad -\frac{T}{2}\brak{\frac{1-\brak{\alpha_1-1}z^{-1}-\alpha_1z^{-2}}{T-2}}\\
+	z^2Y\brak{z}-z\brak{\alpha_1+\alpha_2}Y\brak{z}+Y\brak{z} = \frac{T}{2}\brak{\brak{\frac{z^2-\brak{\alpha_2-1}z-\alpha_2}{T+2}}-\brak{\frac{z^2-\brak{\alpha_1-1}z-\alpha_1}{T-2}}}\\
+	z^2Y\brak{z}-z\brak{\alpha_1+\alpha_2}Y\brak{z}+Y\brak{z} -z^2y\sbrak{0} -zy\sbrak{1} -z\brak{\alpha_1+\alpha_2}y\sbrak{0}\nonumber
+\end{align}
+\begin{align}
+  \qquad+z^2y\sbrak{0}+zy\sbrak{1}+z\brak{\alpha_1+\alpha_2}y\sbrak{0} = \frac{T}{2}\brak{\brak{\frac{z^2-\brak{\alpha_2-1}z-\alpha_2}{T+2}}-\brak{\frac{z^2-\brak{\alpha_1-1}z-\alpha_1}{T-2}}}\\
+  y_{n+2}-\brak{\alpha_1+\alpha_2}y_{n+1}+y_n+\delta\sbrak{n+2}y\sbrak{0}+\delta\sbrak{n+1}\brak{y\sbrak{1}+\brak{\alpha_1+\alpha_2}y\sbrak{0}} = \nonumber \\
+  \qquad\frac{T}{2}\brak{\delta\sbrak{n+2}\brak{\frac{1}{T+2}-\frac{1}{T-2}}-\delta\sbrak{n+1}\brak{\frac{\alpha_1-1}{T-2}+\frac{\alpha_2-1}{T+2}}+\delta\sbrak{n}\brak{\frac{\alpha_1}{T-2}-\frac{\alpha_2}{T+2}}}
+\end{align}
+Since $n\ge 0$, $\delta\sbrak{n+2} = 0$ and $\delta\sbrak{n+1} = 0$
+\begin{align}
+	 y_{n+2}-\brak{\alpha_1+\alpha_2}y_{n+1}+y_n = \frac{T}{2}\brak{\frac{\alpha_1}{T-2}-\frac{\alpha_2}{T+2}}\delta\sbrak{n}
+\end{align}
+As $y\sbrak{0} = 1$ from initial condition and
+\begin{align}
+y\sbrak{1}=y\brak{0} + hy^\prime\brak{0}\\
+\end{align}
+Hence $n\ge 2$ which gives the difference equation as
+\begin{align}
+	y_{n+2} = \brak{\alpha_1+\alpha_2}y_{n+1} - y_n
+\end{align}
 Computational Solution:\newline
 The given differential equation is
 \begin{align}
@@ -136,7 +172,7 @@ Using the above formula, recording the value of $y$ at each value of $x_{k} = x_
 \begin{figure}[h!]
    \centering
    \includegraphics[width=\columnwidth]{figs/fig.png}
-   \caption{Comparison between the Theoritical solution and Computational solution}
+   \caption{Comparison between the Theoritical solution and Computational solutions, Red is theory, Black line is derived from difference equation from Trapezoidal method, while Green line is from Z-transform while taking stepsize to be 0.1}
    \label{stemplot}
 \end{figure}
 \end{document}  

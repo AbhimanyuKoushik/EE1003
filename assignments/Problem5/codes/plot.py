@@ -2,56 +2,55 @@ import ctypes
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Load the shared library
-solver = ctypes.CDLL('./solver.so')
+# Load the compiled C shared library
+lib = ctypes.CDLL('./solver.so')
 
-# Define the function signature for the C function
-solver.recorddata.restype = ctypes.POINTER(ctypes.c_double)
-solver.recorddata.argtypes = [
-    ctypes.c_double,  # lowerbound
-    ctypes.c_double,  # upperbound
-    ctypes.c_double,  # stepsize
-    ctypes.c_double,  # initialy0
-    ctypes.c_double   # initialyprime0
-]
+# Define the argument and return types for the C functions
+lib.recorddata_trapezoid.restype = ctypes.POINTER(ctypes.c_double)
+lib.recorddata_trapezoid.argtypes = [ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double]
+
+lib.recorddata_ztransform.restype = ctypes.POINTER(ctypes.c_double)
+lib.recorddata_ztransform.argtypes = [ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double, ctypes.c_double]
 
 # Define parameters
 lowerbound = 0.0
 upperbound = 10.0
-stepsize = 0.001
+stepsize = 0.1
 initialy0 = 1.0
 initialyprime0 = 0.0
-
-# Calculate the number of data points
 no_datapoints = int((upperbound - lowerbound) / stepsize) + 1
 
-# Call the C function
-results_ptr = solver.recorddata(
-    ctypes.c_double(lowerbound),
-    ctypes.c_double(upperbound),
-    ctypes.c_double(stepsize),
-    ctypes.c_double(initialy0),
-    ctypes.c_double(initialyprime0)
-)
+# Call the C functions
+results_trapezoid = lib.recorddata_trapezoid(lowerbound, upperbound, stepsize, initialy0, initialyprime0)
+results_ztransform = lib.recorddata_ztransform(lowerbound, upperbound, stepsize, initialy0, initialyprime0)
 
-# Convert results back to a NumPy array
-results = np.ctypeslib.as_array(results_ptr, shape=(no_datapoints,))
+# Convert results to Python lists
+sim1 = [results_trapezoid[i] for i in range(no_datapoints)]
+sim2 = [results_ztransform[i] for i in range(no_datapoints)]
 
-# Generate x-values for plotting
-x_values = np.linspace(lowerbound, upperbound, no_datapoints)
+# Free the allocated memory in C
+lib.free(results_trapezoid)
+lib.free(results_ztransform)
 
-# Example theoretical y-values for a chosen function
-y_function = (1/2)*(np.exp(-x_values)+np.exp(x_values))  # Modify this as needed
+# Generate theoretical values
+def theory_function(x):
+    return 0.5 * (np.exp(-x) + np.exp(x))
 
-# Plot the data
-plt.scatter(x_values, results, color='blue', s=10, label='Simulated')
-plt.plot(x_values, y_function, color='red', label='Theoretical')
+theory = [theory_function(i * stepsize) for i in range(no_datapoints)]
+
+# Generate x values
+x_values = [i * stepsize for i in range(no_datapoints)]
+
+# Plot the results
+plt.figure(figsize=(10, 6))
+plt.plot(x_values, sim1, label='Sim1', linestyle='--', color = 'black')
+plt.plot(x_values, sim2, label='Sim2', linestyle='--', color = 'green')
+plt.plot(x_values, theory, label='Theory', color = 'red')
 plt.xlabel('x')
 plt.ylabel('y')
+plt.title('Comparison of Simulations and Theoretical Function')
 plt.legend()
-plt.grid(True)
-plt.title("Comparison of Simulated and Theoretical Results")
-plt.savefig('../figs/fig.png')  # Save the figure
+plt.grid()
+plt.savefig("../figs/fig.png")
 plt.show()
-
 
