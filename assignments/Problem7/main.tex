@@ -1,0 +1,106 @@
+\documentclass[journal]{IEEEtran}
+\usepackage[a5paper, margin=10mm, onecolumn]{geometry}
+%\usepackage{lmodern} % Ensure lmodern is loaded for pdflatex
+\usepackage{tfrupee} % Include tfrupee package
+
+\setlength{\headheight}{1cm} % Set the height of the header box
+\setlength{\headsep}{0mm}     % Set the distance between the header box and the top of the text
+
+\usepackage{gvv-book}
+\usepackage{gvv}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{txfonts}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{gensymb}
+\usepackage{comment}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{tkz-euclide} 
+\usepackage{listings}
+% \usepackage{gvv}                                        
+\def\inputGnumericTable{}                                 
+\usepackage[latin1]{inputenc}                                
+\usepackage{color}                                            
+\usepackage{array}                                            
+\usepackage{longtable}                                       
+\usepackage{calc}                                             
+\usepackage{multirow}                                         
+\usepackage{hhline}                                           
+\usepackage{ifthen}                                           
+\usepackage{lscape}
+\begin{document}
+
+\bibliographystyle{IEEEtran}
+\vspace{3cm}
+
+\title{10.4.1.1.8}
+\author{EE24BTECH11024 - G. Abhimanyu Koushik}
+ \maketitle
+% \newpage
+% \bigskip
+{\let\newpage\relax\maketitle}
+
+\renewcommand{\thefigure}{\theenumi}
+\renewcommand{\thetable}{\theenumi}
+\setlength{\intextsep}{10pt} % Space between text and floats
+
+
+\numberwithin{equation}{enumi}
+\numberwithin{figure}{enumi}
+\renewcommand{\thetable}{\theenumi}
+
+
+\textbf{Question}:\\
+Find the roots of the equation $x^3 - 4x^2 - x + 1 = \brak{x - 2}^3$
+\\
+\textbf{Solution: }\\
+Theoritical solution:\\
+The equation can be simplified to
+\begin{align}
+	x^3 - 4x^2 - x + 1 &= \brak{x - 2}^3\\
+	x^3 - 4x^2 - x + 1 &= x^3-6x^2+12x-8\\
+	2x^2 - 13x + 9 &= 0
+\end{align}
+Applying quadratic formula gives solution as
+\begin{align}
+	x_1 = \frac{13-\sqrt{97}}{4}\\
+	x_2 = \frac{13+\sqrt{97}}{4}
+\end{align}
+Computational solution:\\
+Two methods to find solution of a quadratic equation are:\\
+Matrix-Based Method:\\
+For a polynomial equation of form $x_n+b_{n-1}x^{n-1}+\dots+b_2x^2+b_1x+b_0 = 0$ we construct a matrix called companion matrix of form
+\begin{align}
+	\Lambda = \myvec{0&1&0&\dots&0\\ 0&0&1&\dots&0\\ \vdots &\vdots &\vdots &\ddots&\vdots\\0&0&0&\vdots&1\\-b_0&-b_1&-b_2&\dots&-b_{n-1}}
+\end{align}
+The eigenvalues of this matrix are the roots of the given polynomial equation.\\
+The solution given by the code is
+\begin{align}
+	x_1 = 0.7878\\
+	x_2 = 5.7122
+\end{align}
+Newton-Raphson Method:\\
+Start with an initial guess $x_0$, and then run the following logical loop,
+\begin{align}
+    x_{n+1} = x_n - \frac{f\brak{x_n}}{f^{\prime}\brak{x_n}} 
+\end{align}
+where,
+\begin{align}
+    f\brak{x} = 2x^2 - 13x + 9\\
+    f^{\prime}\brak{x} = 4x-13
+\end{align}
+The problem with this method is if the roots are complex but the coeffcients are real, $x_n$ either converges to an extrema or grows continuously without any bound.
+To get the complex solutions, however , we can just take the initial guess point to be a 
+random complex number.\\
+The output of a program written to find roots is shown below:
+\begin{align}
+	r_1 = 0.7878\\
+	r_2 = 5.7122
+\end{align}
+\end{document}
