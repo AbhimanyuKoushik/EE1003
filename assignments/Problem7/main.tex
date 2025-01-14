@@ -107,9 +107,53 @@ The output of a program written to find roots is shown below:
 	r_1 = 0.7878\\
 	r_2 = 5.7122
 \end{align}
-QR decomposition on Hessenberg matrix:\\
+QR decomposition on Hessenberg matrix with Single Shift:\\
 It is a Numerical method for finding eigenvalues of a given matrix\\
-We say a matrix $A$ is in hessenberg form if it is in form shown below
+For the given polynomial equation the companion matrix will be
+\begin{align}
+	\Lambda = \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}}
+\end{align}
+In this algorithm, we decompose matrix given to two matrices $Q$ and $R$ such that $Q$ is an orthogonal matrix and $R$ is an upper triangular matrix. Then we assign the new matrix $A^\prime$ to be $A^\prime = RQ$, and we do this iteratively. Theoritically, as the number of iterations go to infinite, the matrix $A^\prime$ will converge to an upper triangular matrix whose diagonal elements are the eigenvalues of $A$.
+To increase the rate of convergence we will introduce a shift in the matrix as shown below.
+\begin{align}
+\sigma &= \frac{13}{2}\\
+\Lambda_{\text{shifted}} &= \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}} - \sigma I\\
+\Lambda_{\text{shifted}} &= \myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0}
+\end{align}
+Where $\sigma$ is the last diagonal element. Since $Q$ zeroes out the lower triangular element, which in our case, there is only such element. We will construct an orthogonal matrix such that the element will become 0. Since it is orthogonal
+\begin{align}
+Q &= \myvec{c & s\\-s & c}\\
+\end{align}
+Where
+\begin{align}
+c &= \cos{\phi}\\
+s &= \sin{\phi}
+\end{align}
+Where $\phi$ is the rotation angle. Since it should zero out that one element\\
+\begin{align}
+	\myvec{c & s\\-s & c} \times \myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0} &= \myvec{a & b\\ 0 & c}\\
+	c\brak{\frac{13}{2}} + s\brak{\frac{9}{2}} &= 0\\
+	c^2+s^2 &= 1
+\end{align}
+Solving for $c$ and $s$ gives
+\begin{align}
+	c &= \frac{\frac{-13}{2}}{\sqrt{\brak{\frac{13}{2}}^2+\brak{\frac{9}{2}}}^2}\\
+	s &= \frac{\frac{-9}{2}}{\sqrt{\brak{\frac{13}{2}}^2+\brak{\frac{9}{2}}}^2}
+\end{align}
+Now, as we got the $Q$ matrix we will do the following
+\begin{align}
+\Lambda_{\text{new}} &= Q\Lambda_{\text{shifted}}Q^\top + \sigma I\\
+\Lambda_{\text{new}} &= \myvec{c & s\\-s & c}\myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0}\myvec{c & -s\\s & c} + \sigma I\\
+\Lambda_{\text{new}} &\approx \myvec{0.468 & 5.176\\-0.324 & 6.032} 
+\end{align}
+As the matrix $A$ is undergoing similarity transformation, the eigenvalues will not change.\\
+Run the same sequence of steps for 20 iterations after which you end up with the following matrix
+\begin{align}
+    \Lambda_{\text{new}} = \myvec{0.78778555 & 5.5\\ 0 & 5.71221445}
+\end{align}
+Since its an upper triangular matrix, the eigenvalues are same as its diagonal elements\\
+Hence the roots of given equation are 0.78778555 and 5.71221445\newline \newline
+We will now generalize how to find the eigenvalues of any given matrix. We say a matrix $A$ is in hessenberg form if it is in form shown below
 \begin{align}
 H = 
 \myvec{
@@ -191,8 +235,7 @@ P_2 = \myvec{
 }
 \end{align}
 Now if do similarity transform $PAP$, we will zero out the $n-3$ elements in second column.
-If we continue this pattern we will get the hessenberg form of a the matrix $A$.
-In this algorithm, we decompose matrix given in Hessenberg form to two matrices $Q$ and $R$ such that $Q$ is an orthogonal matrix and $R$ is an upper triangular matrix. Then we assign the new matrix $A^\prime$ to be $A^\prime = RQ$, and we do this iteratively. Theoritically, as the number of iterations go to infinite, the matrix $A^\prime$ will converge to an upper triangular matrix whose diagonal elements are the eigenvalues of $A$. There will be a minor problem in this method when the entries are real while the eigenvalues are complex, we will solve this issue shortly. The eigenvalues of the matrix $A$ will not change because of the following
+If we continue this pattern we will get the hessenberg form of a the matrix $A$. Since our matrix was a $2\times 2$, it was already in hessenberg form. Now we decompose matrix given in Hessenberg form to two matrices $Q$ and $R$ such that $Q$ is an orthogonal matrix and $R$ is an upper triangular matrix. Then we assign the new matrix $A^\prime$ to be $A^\prime = RQ$, and we do this iteratively. Theoritically, as the number of iterations go to infinite, the matrix $A^\prime$ will converge to an upper triangular matrix whose diagonal elements are the eigenvalues of $A$. There will be a minor problem in this method when the entries are real while the eigenvalues are complex, we will solve this issue shortly. The eigenvalues of the matrix $A$ will not change because of the following
 \begin{align}
 	A &= QR\\
 	R &= Q^\top A\\
@@ -205,7 +248,7 @@ The rate of covergence of $A$ depends on the ratio of absolute values of the eig
     \abs{a_{ij}^{\brak{k}}} = O\brak{\abs{\frac{\lambda_i}{\lambda_j}}^k}\text{    } i > j
 \end{align}
 \\
-The QR decomposition is implemented using the Givens rotation technique. This approach is robust and numerically stable, making it ideal for QR decomposition, especially in iterative methods like eigenvalue computations. It is every similar to Jacobian Transformation. We define a rotation matrix $G$, to zero out the elements which are non-diagonal, since the matrix which we are dealing is a Hessenberg matrix, we need to zero out the elements which are just below the diagonal elements.
+We define a rotation matrix $G$, to zero out the elements which are non-diagonal, since the matrix which we are dealing is a Hessenberg matrix, we need to zero out the elements which are just below the diagonal elements.
 \begin{align}
 G = \myvec{
 1 & \cdots & 0 & 0 & \cdots & 0 \\
@@ -264,31 +307,4 @@ $RQ$ Will also be in the same form
 \begin{align}
 \overline{H} = RQ+\lambda I = \myvec{\overline{H_1} & \vec{h}_1\\0^\top & \lambda}
 \end{align}
-\newline\newline
-For the given polynomial equation the companion matrix will be
-\begin{align}
-	\Lambda = \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}}
-\end{align}
-Since a $2\times 2$ matrix is already in hessenberg for, no need to run the hessenberg algorithm\newline
-As $n=2$, the $G_1$ matrix is equal to $Q$ matrix\newline
-For the first iteration
-\begin{align}
-\sigma &= \frac{13}{2}\\
-H_{\text{shifted}} &= \myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0}\\
-x_{1,1} &=  \frac{-13}{2}\\
-x_{1,2} &=  \frac{-9}{2}\\
-c &= \frac{\frac{-13}{2}}{\sqrt{\brak{\frac{13}{2}}^2+\brak{\frac{9}{2}}}^2}\\
-s &= \frac{\frac{-9}{2}}{\sqrt{\brak{\frac{13}{2}}^2+\brak{\frac{9}{2}}}^2}\\
-c &\approx -0.822192\\
-s &\approx -0.569210\\
-Q &= \myvec{-0.822192 & -0.569210\\0.569210 &-0.822192}\\
-H_{\text{new}} &= QH_{\text{shifted}}Q^\top+\sigma I\\
-H_{\text{new}} &= \myvec{0.468 & 5.176\\-0.324 & 6.032} 
-\end{align}
-Running the same sequence of steps for 20 iterations produces the following matrix
-\begin{align}
-H = \myvec{0.78778555 & 5.5\\ 0 & 5.71221445}
-\end{align}
-Since it is an Upper triangular matrix, the diagonal elements are the eigenvalues\newline
-Hence the roots of given equation are 0.78778555 and 5.71221445
 \end{document}
