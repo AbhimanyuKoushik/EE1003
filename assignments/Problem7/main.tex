@@ -223,9 +223,9 @@ Where the value of $c$ and $s$ are
 \end{align}
 If we multiply $G$ and $A$, we can see easily that it nulls out the element in $\brak{i+1}^{\text{th}}$ row and $i^\text{th}$ column. The following matrix multiplication eliminates all the elements below the diagonal of $A$
 \begin{align}
-	A \implies G_nG_{n-1}\cdots G_2G_1A
+	A \implies G_{n-1}G_{n-2}\cdots G_2G_1A
 \end{align}
-Now, we store $G_nG_{n-1}\cdots G_2G_1$ in $Q$ and then
+Now, we store $G_{n-1}G_{n-2}\cdots G_2G_1$ in $Q$ and then
 \begin{align}
 	A^\prime \implies QAQ^\top\\
 \end{align}
@@ -237,6 +237,58 @@ If all the entries in the matrix are real but the eigenvalues are complex, the m
 		   \vdots & \cdots & \ddots & 0\\
 		   0 & 0 & 0 & B_n}
 \end{align}
-Where $B_i$ is a $2 \times 2$ block matrix. These matrices are called jordan blocks. In this case, the eigenvalues are calculated by solving the characteristic equation of the $2 \times 2$ matrix. Since it will be a quadratic equation, it can be easily solved and the solutions of that characteristic equation will be the eigenvalues. 
-
+Where $B_i$ is a $2 \times 2$ block matrix. These matrices are called jordan blocks. In this case, the eigenvalues are calculated by solving the characteristic equation of the $2 \times 2$ matrix. Since it will be a quadratic equation, it can be easily solved and the solutions of that characteristic equation will be the eigenvalues.\newline
+The major defect in QR decomposition algorithm is that sometimes the rate of convergence is very low. The idea behind Rayleigh Quotient method is really simple, since the rate of convergence is low, we will increase the rate of convergence by making a shift. According to the order of rate of covergence given in equation \brak{0.35}, if null of the last element \brak{\lambda_i=0} the order of convergence will be very high. So what we do is we shift the Hessenberg matrix by some amount, apply QR decomposition algorithm and add the shift back. If this shift is exactly the eigenvalue then it completes in very less number of iteration (best case, only 1 iteration). But since we do not know the eigenvalue, we will take the guess to be the last diagonal element.
+\begin{align}
+	H^\prime &= H - \sigma I\\
+	H^\prime &\implies {H^\prime}_{tranformed}\\
+	H_{next} &= {H^\prime}_{tranformed} + \sigma I
+\end{align}
+This method does not change the eigenvalues as
+\begin{align}
+\overline{H} &= Q\brak{H - \lambda I}Q^\top\\
+	&= QHQ^\top - \lambda QIQ^\top\\
+	&= QHQ^\top - \lambda I\\
+\overline{H} +\lambda I &= QHQ^\top
+\end{align}
+which is a similarity tranformation.\\
+Here, once we finding the eigenvalue and it is in the last diagonal element, we will leave it as it is and then focus on smaller matrix block present diagonally above the eigenvalue and then use the same technique to push the next eigenvalue to the next diagonal element. We will continue to do this till all the eigenvalues are present in the diagonal. This is know as deflation.
+\begin{align}
+H  - \lambda I = QR\\
+R = \myvec{\times & \times & \cdots & \times\\
+	0 & \times & \cdots & \times\\
+	\vdots & \vdots & \ddots & \times\\
+	0 & 0 & \cdots & 0}
+\end{align}
+$RQ$ Will also be in the same form
+\begin{align}
+\overline{H} = RQ+\lambda I = \myvec{\overline{H_1} & \vec{h}_1\\0^\top & \lambda}
+\end{align}
+\newline\newline
+For the given polynomial equation the companion matrix will be
+\begin{align}
+	\Lambda = \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}}
+\end{align}
+Since a $2\times 2$ matrix is already in hessenberg for, no need to run the hessenberg algorithm\newline
+As $n=2$, the $G_1$ matrix is equal to $Q$ matrix\newline
+For the first iteration
+\begin{align}
+\sigma &= \frac{13}{2}\\
+H_{\text{shifted}} &= \myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0}\\
+x_{1,1} &=  \frac{-13}{2}\\
+x_{1,2} &=  \frac{-9}{2}\\
+c &= \frac{\frac{-13}{2}}{\sqrt{\brak{\frac{13}{2}}^2+\brak{\frac{9}{2}}}^2}\\
+s &= \frac{\frac{-9}{2}}{\sqrt{\brak{\frac{13}{2}}^2+\brak{\frac{9}{2}}}^2}\\
+c &\approx -0.822192\\
+s &\approx -0.569210\\
+Q &= \myvec{-0.822192 & -0.569210\\0.569210 &-0.822192}\\
+H_{\text{new}} &= QH_{\text{shifted}}Q^\top+\sigma I\\
+H_{\text{new}} &= \myvec{0.468 & 5.176\\-0.324 & 6.032} 
+\end{align}
+Running the same sequence of steps for 20 iterations produces the following matrix
+\begin{align}
+H = \myvec{0.78778555 & 5.5\\ 0 & 5.71221445}
+\end{align}
+Since it is an Upper triangular matrix, the diagonal elements are the eigenvalues\newline
+Hence the roots of given equation are 0.78778555 and 5.71221445
 \end{document}
