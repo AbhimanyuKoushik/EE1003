@@ -89,7 +89,8 @@ double complex newton_raphson(double complex a, double complex b, double complex
         if (cabs(quadder(x_n)) < 1e-13) {  // Check if the derivative is too small
             x_n += epsilon;  // Perturb the guess to avoid division by zero
         }
-        x_n = x_n - quad(x_n) / quadder(x_n);  // Update the estimate using Newton-Raphson
+        printf("This is x_n now, %lf\n",creal(x_n));
+        x_n = x_n - (quad(x_n) / quadder(x_n));  // Update the estimate using Newton-Raphson
     }
 
     return x_n;  // Return the computed root
