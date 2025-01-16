@@ -108,29 +108,28 @@ The output of a program written to find roots is shown below:
 	r_2 = 5.7122
 \end{align}
 QR decomposition on Hessenberg matrix with Single Shift:\\
-It is a Numerical method for finding eigenvalues of a given matrix\\
-For the given polynomial equation the companion matrix will be
+Companion matrix
 \begin{align}
-	\Lambda = \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}}
+\Lambda_{0} &= \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}}
 \end{align}
-In this algorithm, we decompose matrix given to two matrices $Q$ and $R$ such that $Q$ is an orthogonal matrix and $R$ is an upper triangular matrix. Then we assign the new matrix $A^\prime$ to be $A^\prime = RQ$, and we do this iteratively. Theoritically, as the number of iterations go to infinite, the matrix $A^\prime$ will converge to an upper triangular matrix whose diagonal elements are the eigenvalues of $A$.
-To increase the rate of convergence we will introduce a shift in the matrix as shown below.
+The update equation will be
+\begin{align}
+\Lambda_{n+1} &= Q\brak{\Lambda_{n}-\sigma I}Q^\top + \sigma I\\
+\end{align}
+As $n$ tends to infinite, $\Lambda$ converges to Upper triangular matrix
 \begin{align}
 \sigma &= \frac{13}{2}\\
 \Lambda_{\text{shifted}} &= \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}} - \sigma I\\
 \Lambda_{\text{shifted}} &= \myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0}
 \end{align}
-Where $\sigma$ is the last diagonal element. Since $Q$ zeroes out the lower triangular element, which in our case, there is only such element. We will construct an orthogonal matrix such that the element will become 0. Since it is orthogonal
+Where $\sigma$ is the last diagonal element.
 \begin{align}
 Q &= \myvec{c & s\\-s & c}\\
 \end{align}
 Where
 \begin{align}
 c &= \cos{\phi}\\
-s &= \sin{\phi}
-\end{align}
-Where $\phi$ is the rotation angle. Since it should zero out that one element\\
-\begin{align}
+s &= \sin{\phi}\\
 	\myvec{c & s\\-s & c} \times \myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0} &= \myvec{a & b\\ 0 & c}\\
 	c\brak{\frac{9}{2}} + s\brak{\frac{13}{2}} &= 0\\
 	c^2+s^2 &= 1
@@ -146,27 +145,13 @@ Now, as we got the $Q$ matrix we will do the following
 \Lambda_{\text{new}} &= \myvec{c & s\\-s & c}\myvec{\frac{-13}{2} & 1\\ \frac{-9}{2} & 0}\myvec{c & -s\\s & c} + \sigma I\\
 \Lambda_{\text{new}} &\approx \myvec{0.468 & 5.176\\-0.324 & 6.032} 
 \end{align}
-As the matrix $A$ is undergoing similarity transformation, the eigenvalues will not change.\\
 Run the same sequence of steps for 20 iterations after which you end up with the following matrix
 \begin{align}
     \Lambda_{\text{new}} = \myvec{0.78778555 & 5.5\\ 0 & 5.71221445}
 \end{align}
-Since its an upper triangular matrix, the eigenvalues are same as its diagonal elements\\
+The eigenvalues are same as its diagonal elements\\
 Hence the roots of given equation are 0.78778555 and 5.71221445\newline \newline
-We will now generalize how to find the eigenvalues of any given matrix. We say a matrix $A$ is in hessenberg form if it is in form shown below
-\begin{align}
-H = 
-\myvec{
-\times & \times & \times & \cdots & \times \\
-\times & \times & \times & \cdots & \times \\
-0      & \times & \times & \cdots & \times \\
-0      & 0      & \times & \cdots & \times \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-0      & 0      & 0      & \cdots & \times
-}
-\end{align}
-We will use householder method to reduce any matrix into hessenberg form.\\
-It reduces an $n\times n$ matrix to hessenberg form by $n-2$ orthogonal trasformations. Each transformations annihilates the required part of a whole column at a time rather than element wise elimination. The basic ingredient for a house holder matrix is $P$ which is in the form
+For a general matrix, we should bring to hessenberg form $H$, for that let
 \begin{align}
 	P = I-2\vec{w}\vec{w}^\top
 \end{align}
@@ -222,7 +207,6 @@ a_{00}^\prime & \times & \times & \cdots & \times \\
 0      & \times      & \times      & \cdots & \times
 }
 \end{align}
-Now if we multiply the matrix $P_1A$ with $P_1$, the eigenvalues will be conserved as it is a similarity transformation.\\
 Now we choose the vector $\vec{x}$ for the householder matrix to be the bottom $n-2$ elements of the second column, and from it construct the $P_2$
 \begin{align}
 P_2 = \myvec{
@@ -234,21 +218,12 @@ P_2 = \myvec{
 0 & 0 & p_{n2} & \cdots & p_{nn}
 }
 \end{align}
-Now if do similarity transform $PAP$, we will zero out the $n-3$ elements in second column.
-If we continue this pattern we will get the hessenberg form of a the matrix $A$. Since our matrix was a $2\times 2$, it was already in hessenberg form. Now we decompose matrix given in Hessenberg form to two matrices $Q$ and $R$ such that $Q$ is an orthogonal matrix and $R$ is an upper triangular matrix. Then we assign the new matrix $A^\prime$ to be $A^\prime = RQ$, and we do this iteratively. Theoritically, as the number of iterations go to infinite, the matrix $A^\prime$ will converge to an upper triangular matrix whose diagonal elements are the eigenvalues of $A$. There will be a minor problem in this method when the entries are real while the eigenvalues are complex, we will solve this issue shortly. The eigenvalues of the matrix $A$ will not change because of the following
+Continue the pattern\\
+Let $H$ be the Hessenberg matrix then
 \begin{align}
-	A &= QR\\
-	R &= Q^\top A\\
-	A^\prime &= RQ\\
-	A^\prime &= Q^\top AQ
+H_{n+1} = Q\brak{H_n - \sigma I}Q^\top + \sigma I
 \end{align}
-As the matrix $A$ is undergoing similarity transformation, the eigenvalues will not change.\\
-The rate of covergence of $A$ depends on the ratio of absolute values of the eigenvalues. That is, if the eigenvalues are $\abs{\lambda_1} \geq \abs{\lambda_2} \geq \abs{\lambda_3} \dots \geq \abs{\lambda_n}$ then, the elements of $A_k$ below the diagonal to converge to zero like
-\begin{align}
-    \abs{a_{ij}^{\brak{k}}} = O\brak{\abs{\frac{\lambda_i}{\lambda_j}}^k}\text{    } i > j
-\end{align}
-\\
-We define a rotation matrix $G$, to zero out the elements which are non-diagonal, since the matrix which we are dealing is a Hessenberg matrix, we need to zero out the elements which are just below the diagonal elements.
+To find $Q$, we do the following, let
 \begin{align}
 G = \myvec{
 1 & \cdots & 0 & 0 & \cdots & 0 \\
@@ -264,47 +239,21 @@ Where the value of $c$ and $s$ are
 	c = \frac{\overline{x_{i,i}}}{\sqrt{\abs{x_{i,i}}^2+\abs{x_{i,i+1}}^2}}\\
 	s = \frac{\overline{x_{i,i+1}}}{\sqrt{\abs{x_{i,i}}^2+\abs{x_{i,i+1}}^2}}
 \end{align}
-If we multiply $G$ and $A$, we can see easily that it nulls out the element in $\brak{i+1}^{\text{th}}$ row and $i^\text{th}$ column. The following matrix multiplication eliminates all the elements below the diagonal of $A$
+Multiplying $G$ and $A$ nulls out the element in $\brak{i+1}^{\text{th}}$ row and $i^\text{th}$ column. Now
 \begin{align}
-	A \implies G_{n-1}G_{n-2}\cdots G_2G_1A
+	H \implies G_{n-1}G_{n-2}\cdots G_2G_1\brak{H - \sigma I}
 \end{align}
 Now, we store $G_{n-1}G_{n-2}\cdots G_2G_1$ in $Q$ and then
 \begin{align}
-	A^\prime \implies QAQ^\top\\
+	H_{n+1} \implies Q\brak{H_n - \sigma I}Q^\top+ \sigma I\\
 \end{align}
-If we carry out these transformation infinite times, the $A$ will be an upper triangular matrix with diagonal elements as eigenvalues.
-If all the entries in the matrix are real but the eigenvalues are complex, the matrix $A$ will converge to a Quasi-triangular form, that is
+As $n$ tends to $\infty$, the diagonal elements become eigenvalues
+If all the entries in the matrix are real but the eigenvalues are complex, the matrix $A$ will converge to
 \begin{align}
 	A = \myvec{B_1 & 0 & \cdots & 0 \\
 		   0 & B_2 & \cdots & 0\\
 		   \vdots & \cdots & \ddots & 0\\
 		   0 & 0 & 0 & B_n}
 \end{align}
-Where $B_i$ is a $2 \times 2$ block matrix. These matrices are called jordan blocks. In this case, the eigenvalues are calculated by solving the characteristic equation of the $2 \times 2$ matrix. Since it will be a quadratic equation, it can be easily solved and the solutions of that characteristic equation will be the eigenvalues.\newline
-The major defect in QR decomposition algorithm is that sometimes the rate of convergence is very low. The idea behind Rayleigh Quotient method is really simple, since the rate of convergence is low, we will increase the rate of convergence by making a shift. According to the order of rate of covergence given in equation \brak{0.35}, if null of the last element \brak{\lambda_i=0} the order of convergence will be very high. So what we do is we shift the Hessenberg matrix by some amount, apply QR decomposition algorithm and add the shift back. If this shift is exactly the eigenvalue then it completes in very less number of iteration (best case, only 1 iteration). But since we do not know the eigenvalue, we will take the guess to be the last diagonal element.
-\begin{align}
-	H^\prime &= H - \sigma I\\
-	H^\prime &\implies {H^\prime}_{tranformed}\\
-	H_{next} &= {H^\prime}_{tranformed} + \sigma I
-\end{align}
-This method does not change the eigenvalues as
-\begin{align}
-\overline{H} &= Q\brak{H - \lambda I}Q^\top\\
-	&= QHQ^\top - \lambda QIQ^\top\\
-	&= QHQ^\top - \lambda I\\
-\overline{H} +\lambda I &= QHQ^\top
-\end{align}
-which is a similarity tranformation.\\
-Here, once we finding the eigenvalue and it is in the last diagonal element, we will leave it as it is and then focus on smaller matrix block present diagonally above the eigenvalue and then use the same technique to push the next eigenvalue to the next diagonal element. We will continue to do this till all the eigenvalues are present in the diagonal. This is know as deflation.
-\begin{align}
-H  - \lambda I = QR\\
-R = \myvec{\times & \times & \cdots & \times\\
-	0 & \times & \cdots & \times\\
-	\vdots & \vdots & \ddots & \times\\
-	0 & 0 & \cdots & 0}
-\end{align}
-$RQ$ Will also be in the same form
-\begin{align}
-\overline{H} = RQ+\lambda I = \myvec{\overline{H_1} & \vec{h}_1\\0^\top & \lambda}
-\end{align}
+Where $B_i$ is a $2 \times 2$ block matrix. These matrices are called jordan blocks. In this case, the eigenvalues are calculated by solving the characteristic equation of the $2 \times 2$ matrix
 \end{document}
