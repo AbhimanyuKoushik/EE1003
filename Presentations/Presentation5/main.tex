@@ -102,7 +102,7 @@ If a function has a local maxima at $x=x_0$ then $f^\prime\brak{x_0} = 0$ and $f
 	f^\prime\brak{x} = 4x^3 - 124x + a \\
 	f^{\prime\prime}\brak{x} = 12x^2 - 124\\
 	f^\prime\brak{1} = 4-124+a\\
-	f^{\prime\prime}\brak{1} = 12 - 124\\
+	f^{\prime\prime}\brak{1} = 12 - 124
 \end{align}
 $f^{\prime\prime}\brak{1}$ is anyway negative so $f^\prime\brak{1}$ should be $0$
 \begin{align}
@@ -182,7 +182,7 @@ The question minimum value of $L\brak{a} = \brak{a-120}^2$ can be viewed as a Qu
 The constraint here is non-convex since the constraint defines a set which is not convex, since points on the
 line joining any 2 points on the curve don't belong to the set. However, if we make the constraint
 \begin{align}
-    \vec{x}^{\top}V\vec{x} + 2\vec{u}^{\top}\vec{x} \le 0
+    \vec{x}^{\top}V\vec{x} + 2\vec{u}^{\top}\vec{x} + f\le 0
 \end{align}
 the constraint becomes convex. Using cvxpy to solve this convex optimization problem, we get \\
 \begin{align}
