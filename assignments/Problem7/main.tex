@@ -107,7 +107,6 @@ The output of a program written to find roots is shown below:
 	r_1 = 0.7878\\
 	r_2 = 5.7122
 \end{align}
-QR decomposition on Hessenberg matrix with Single Shift:\\
 Companion matrix
 \begin{align}
 \Lambda_{0} &= \myvec{0 & 1\\-\frac{9}{2} & \frac{13}{2}}
@@ -151,6 +150,7 @@ Run the same sequence of steps for 20 iterations after which you end up with the
 \end{align}
 The eigenvalues are same as its diagonal elements\\
 Hence the roots of given equation are 0.78778555 and 5.71221445\newline \newline
+To reduce a matrix into $QR$ form we do the following\newline
 For a general matrix, we should bring to hessenberg form $H$, for that let
 \begin{align}
 	P = I-2\vec{w}\vec{w}^\top
@@ -219,11 +219,7 @@ P_2 = \myvec{
 }
 \end{align}
 Continue the pattern\\
-Let $H$ be the Hessenberg matrix then
-\begin{align}
-H_{n+1} = Q\brak{H_n - \sigma I}Q^\top + \sigma I
-\end{align}
-To find $Q$, we do the following, let
+Let $H$ be the Hessenberg matrix. To find $Q$, we do the following, let
 \begin{align}
 G = \myvec{
 1 & \cdots & 0 & 0 & \cdots & 0 \\
@@ -241,19 +237,22 @@ Where the value of $c$ and $s$ are
 \end{align}
 Multiplying $G$ and $A$ nulls out the element in $\brak{i+1}^{\text{th}}$ row and $i^\text{th}$ column. Now
 \begin{align}
-	H \implies G_{n-1}G_{n-2}\cdots G_2G_1\brak{H - \sigma I}
+	Q = G_{n-1}G_{n-2}\cdots G_2G_1
 \end{align}
-Now, we store $G_{n-1}G_{n-2}\cdots G_2G_1$ in $Q$ and then
+\newline
+\textbf{QR decomposition:}\newline
+Given $H_0$
 \begin{align}
-	H_{n+1} \implies Q\brak{H_n - \sigma I}Q^\top+ \sigma I\\
+	H_n = Q_nR_n\\
+	H_{n+1} = R_nQ_n
 \end{align}
-As $n$ tends to $\infty$, the diagonal elements become eigenvalues
-If all the entries in the matrix are real but the eigenvalues are complex, the matrix $A$ will converge to
+As $n$ tends to infinite, $H$ will converge to upper triangular matrix, whose eigenvalues are the roots of the equation\newline
+\textbf{QR decomposition with Shift:}\newline
+Given $H_0$
 \begin{align}
-	A = \myvec{B_1 & 0 & \cdots & 0 \\
-		   0 & B_2 & \cdots & 0\\
-		   \vdots & \cdots & \ddots & 0\\
-		   0 & 0 & 0 & B_n}
+	H_n - \sigma I = Q_nR_n\\
+	H_{n+1} = R_nQ_n + \sigma I
 \end{align}
-Where $B_i$ is a $2 \times 2$ block matrix. These matrices are called jordan blocks. In this case, the eigenvalues are calculated by solving the characteristic equation of the $2 \times 2$ matrix
+Where $\sigma$ is the last diagonal element
+As $n$ tends to infinite, $H$ will converge to upper triangular matrix faster than QR decomposition
 \end{document}
