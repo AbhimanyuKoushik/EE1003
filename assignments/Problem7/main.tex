@@ -244,14 +244,24 @@ Multiplying $G$ and $A$ nulls out the element in $\brak{i+1}^{\text{th}}$ row an
 Given $H_0$
 \begin{align}
 	H_n = Q_nR_n\\
+	Q^\top H_n = R_n\\
 	H_{n+1} = R_nQ_n
+\end{align}
+The update equation will be
+\begin{align}
+	H_{n+1} = Q^\top H_n Q
 \end{align}
 As $n$ tends to infinite, $H$ will converge to upper triangular matrix, whose eigenvalues are the roots of the equation\newline
 \textbf{QR decomposition with Shift:}\newline
 Given $H_0$
 \begin{align}
 	H_n - \sigma I = Q_nR_n\\
+	Q^\top\brak{H_n - \sigma I} = R_n\\
 	H_{n+1} = R_nQ_n + \sigma I
+\end{align}
+The update equation will be
+\begin{align}
+H_{n+1} = Q^\top\brak{H_n - \sigma I}Q_n + \sigma I
 \end{align}
 Where $\sigma$ is the last diagonal element
 As $n$ tends to infinite, $H$ will converge to upper triangular matrix faster than QR decomposition
