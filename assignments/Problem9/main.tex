@@ -1,0 +1,92 @@
+\documentclass[journal]{IEEEtran}
+\usepackage[a5paper, margin=10mm, onecolumn]{geometry}
+%\usepackage{lmodern} % Ensure lmodern is loaded for pdflatex
+\usepackage{tfrupee} % Include tfrupee package
+
+\setlength{\headheight}{1cm} % Set the height of the header box
+\setlength{\headsep}{0mm}     % Set the distance between the header box and the top of the text
+
+\usepackage{gvv-book}
+\usepackage{gvv}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{txfonts}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{gensymb}
+\usepackage{comment}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{tkz-euclide} 
+\usepackage{listings}
+% \usepackage{gvv}                                        
+\def\inputGnumericTable{}                                 
+\usepackage[latin1]{inputenc}                                
+\usepackage{color}                                            
+\usepackage{array}                                            
+\usepackage{longtable}                                       
+\usepackage{calc}                                             
+\usepackage{multirow}                                         
+\usepackage{hhline}                                           
+\usepackage{ifthen}                                           
+\usepackage{lscape}
+\begin{document}
+
+\bibliographystyle{IEEEtran}
+\vspace{3cm}
+
+\title{10.3.2.4.4}
+\author{EE24BTECH11024 - G. Abhimanyu Koushik}
+ \maketitle
+% \newpage
+% \bigskip
+{\let\newpage\relax\maketitle}
+
+\renewcommand{\thefigure}{\theenumi}
+\renewcommand{\thetable}{\theenumi}
+\setlength{\intextsep}{10pt} % Space between text and floats
+
+
+\numberwithin{equation}{enumi}
+\numberwithin{figure}{enumi}
+\renewcommand{\thetable}{\theenumi}
+
+
+\textbf{Question}:\\
+A three coins are tossed once, what is the probability of getting atmost 2 heads?
+\\
+\textbf{Solution: }\\
+The sample space is 
+\begin{align}
+  \Omega = \sbrak{HHH, HHT, HTH, HTT, THH, THT, TTH, TTT}
+\end{align}
+Assuming equally likely outcomes, 
+\begin{align}
+  \Pr\brak{\omega \in \Omega} = \frac{1}{8}
+\end{align}
+Define a discrete random variable X = number of heads
+\begin{align}
+  \Pr\brak{X \le 2} &= 1 - \Pr\brak{X > 2}\\
+  &= 1 - \frac{1}{8} = \frac{7}{8}
+\end{align}
+Simulation:
+\newline
+To run a simulation we need to generate random numbers with uniform probability, which is done
+as shown below(Algorithm taken from OpenSSL's random\_uniform.c):
+\begin{enumerate}
+  \item \text{Generate 32 bits of entropy using /dev/urandom.}
+  \item Treat this as a fixed point number in the range [0, 1)
+  \item Scale this to desired range using fixed point multiplication and treat as 64bit number(upper 32 bits integer and rest as fractional part)
+  \item Return the integer part of the fixed point numbers
+\end{enumerate}
+The following shows how the relative frequency reaches true probability with increasing number of trials of the event.
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.7\columnwidth]{figs/fig.png}
+    \caption{Relative Frequency tends to True Probability}
+\end{figure}
+\end{document}
