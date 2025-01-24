@@ -68,10 +68,31 @@ Assuming equally likely outcomes,
 \begin{align}
   \Pr\brak{\omega \in \Omega} = \frac{1}{8}
 \end{align}
-Define a discrete random variable X = number of heads
+Define a discrete random variable X = number of heads\newline
+The Probability Mass Function (PMF) for the given random variable is
 \begin{align}
-  \Pr\brak{X \le 2} &= 1 - \Pr\brak{X > 2}\\
-  &= 1 - \frac{1}{8} = \frac{7}{8}
+P(X = k) =
+\begin{cases}
+	\frac{1}{8}, & k = 0 \\
+	\frac{3}{8}, & k = 1 \\
+	\frac{3}{8}, & k = 2 \\
+	\frac{3}{8}, & k = 3 \\
+\end{cases}
+\end{align}
+The Cumulative Distribution Function (CDF) for the given random variable is
+\begin{align}
+F_X(k) = P(X \le k) = 
+\begin{cases}
+	0, & k < 0 \\
+	\frac{1}{8}, & 0 \le k < 1 \\
+	\frac{4}{8}, & 1 \le k < 2 \\
+	\frac{7}{8}, & 2 \le k < 3 \\
+	1, & 3 \le k\\
+\end{cases}
+\end{align}
+The probability of getting atmost 2 heads is
+\begin{align}
+  \Pr\brak{X \le 2} &= \frac{7}{8}
 \end{align}
 Simulation:
 \newline
@@ -86,7 +107,17 @@ as shown below(Algorithm taken from OpenSSL's random\_uniform.c):
 The following shows how the relative frequency reaches true probability with increasing number of trials of the event.
 \begin{figure}[h!]
    \centering
-   \includegraphics[width=0.7\columnwidth]{figs/fig.png}
+   \includegraphics[width=1\columnwidth]{figs/fig.png}
     \caption{Relative Frequency tends to True Probability}
+\end{figure}
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=1\columnwidth]{figs/pmf.png}
+    \caption{Probability Mass Function of given Random variable}
+\end{figure}
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=1\columnwidth]{figs/cdf.png}
+    \caption{Cumulative Distribution Function of given Random variable}
 \end{figure}
 \end{document}
