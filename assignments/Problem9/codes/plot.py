@@ -1,7 +1,7 @@
 import ctypes
 import numpy as np
 import matplotlib.pyplot as plt
-gen = ctypes.CDLL('./solver.so')
+gen = ctypes.CDLL('./plotter.so')
 
 gen.run_sim.argtypes = [
         ctypes.c_int, ctypes.POINTER(ctypes.c_double)

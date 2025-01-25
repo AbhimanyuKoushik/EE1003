@@ -1,25 +1,66 @@
 #include <stdio.h>
-#include <openssl/rand.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
-// 1 - heads; 0 - tails
-void run_sim(int max_tosses, double *points) {
-    int count = 0;
-    for (int i = 0; i < max_tosses; i++) {  // Iterate up to max_tosses
-        unsigned char buffer1[3];
-        if (RAND_bytes(buffer1, sizeof(buffer1)) != 1) {
-            printf("Error in generating random bytes.\n");
-            return;  // Exit the function on failure
-        }
-        int coin1 = 1 & buffer1[0];
-        int coin2 = 1 & buffer1[1];
-        int coin3 = 1 & buffer1[2];
-        if (!(coin1 && coin2 && coin3)) {
-            count++;
-        }
-        points[2 * i] = (double)(i + 1);
-        points[2 * i + 1] = (double)count / (i + 1);
-        printf("%d %lf\n", i + 1, points[2 * i + 1]);
+double* binomial_rv(double pval, int no_events) {
+    if (pval < 0 || pval > 1) {
+        printf("Error: Probability pval must be in the range [0, 1].\n");
+        return NULL;
     }
-    return;
+    if (no_events <= 0) {
+        printf("Error: Number of events must be greater than 0.\n");
+        return NULL;
+    }
+
+    double* pmf = malloc((no_events + 1) * sizeof(double));
+
+    // Initialize the PMF array to 0
+    for (int i = 0; i <= no_events; i++) {
+        pmf[i] = 0.0;
+    }
+
+    int trials = (int)(10000/fmin(pval,1-pval));
+
+    srand(time(NULL));
+
+    // Simulate the Binomial random variable
+    for (int t = 0; t < trials; t++) {
+        int successes = 0;
+        for (int i = 0; i < no_events; i++) {
+            if ((rand() / (double)RAND_MAX) < pval) {
+                successes++;
+            }
+        }
+        pmf[successes] += 1.0 / trials; // Update probability for the number of successes
+    }
+
+    return pmf;
 }
 
+
+int main() {
+    double pval;
+    int no_events;
+
+    printf("Enter the probability of success (pval) for the Binomial random variable (0 <= pval <= 1): ");
+    scanf("%lf", &pval);
+
+    printf("Enter the number of trials (no_events) for the Binomial random variable: ");
+    scanf("%d", &no_events);
+
+    // Call binomial_rv to calculate PMF
+    double* pmf = binomial_rv(pval, no_events);
+    if (pmf != NULL) {
+        // Print the PMF
+        printf("PMF of Binomial random variable:\n");
+        for (int k = 0; k <= no_events; k++) {
+            printf("P(X=%d) = %lf\n", k, pmf[k]);
+        }
+
+        // Free the allocated memory for PMF
+        free(pmf);
+    }
+
+    return 0;
+}
