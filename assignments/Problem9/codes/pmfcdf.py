@@ -46,15 +46,13 @@ plt.grid(True)
 plt.savefig("../figs/pmf.png")
 plt.show()
 
-
 plt.figure(figsize=(8, 6))
-markerline, stemlines, baseline = plt.stem(x, cdf)
-plt.setp(markerline, 'markerfacecolor', 'red')
-plt.setp(stemlines, 'color', 'red')
-plt.setp(baseline, 'color', 'gray', 'linewidth', 1)
+plt.step(x, cdf, where='post', color='red', label='CDF')
 plt.xlabel('x')
 plt.ylabel('$F_{X}(k)$')
+plt.title('Cumulative Distribution Function (CDF)')
 plt.grid(True)
+plt.legend()
 plt.savefig("../figs/cdf.png")
 plt.show()
 
