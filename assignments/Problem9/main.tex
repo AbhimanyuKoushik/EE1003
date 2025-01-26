@@ -82,13 +82,13 @@ Where $p=\frac{1}{2}$\newline
 Using properties of Z-Transform of PMF
 \begin{align}
 	M_X(z) &= M_{X_1}(z)M_{X_2}(z)M_{X_3}(z)\\
-	M_{X_1}(z) &= \sum_{n=-\infty}^{\infty}p_{X_1}(n)z^{-n} = p+(1-p)z^{-1}\\
-	M_{X_2}(z) &= \sum_{n=-\infty}^{\infty}p_{X_2}(n)z^{-n} = p+(1-p)z^{-1}\\
-	M_{X_3}(z) &= \sum_{n=-\infty}^{\infty}p_{X_3}(n)z^{-n} = p+(1-p)z^{-1}\\
-	M_X(z) &= (p+(1-p)z^{-1})^3\\
-	 &= \sum_{k=-\infty}^{\infty}\comb{3}{k}p^{3-k}(1-p)^kz^{-k}\\
-	p_{X}(k) &= \comb{3}{k}p^{3-k}(1-p)^{k}\\
-	p_{X}(k) &= \frac{\comb{3}{k}}{8}
+	M_{X_1}(z) &= \sum_{n=-\infty}^{\infty}p_{X_1}(n)z^{-n} = (1-p)+pz^{-1}\\
+	M_{X_2}(z) &= \sum_{n=-\infty}^{\infty}p_{X_2}(n)z^{-n} = (1-p)+pz^{-1}\\
+	M_{X_3}(z) &= \sum_{n=-\infty}^{\infty}p_{X_3}(n)z^{-n} = (1-p)+pz^{-1}\\
+	M_X(z) &= ((1-p)+pz^{-1})^3\\
+	 &= \sum_{n=-\infty}^{\infty}\comb{3}{n}(1-p)^{3-n}p^nz^{-n}\\
+	p_{X}(n) &= \comb{3}{n}p^{n}(1-p)^{3-n}\\
+	p_{X}(n) &= \frac{\comb{3}{n}}{8}
 \end{align}
 The Probability Mass Function (PMF) for the given random variable is
 \begin{align}
@@ -102,14 +102,13 @@ p_X(n) =
 \end{align}
 The Cumulative Distribution Function (CDF) for the given random variable is
 \begin{align}
-F_X(n) = p(X \le n) = 
-\begin{cases}
-	0, & n < 0 \\
-	\frac{1}{8}, & 0 \le n < 1 \\
-	\frac{4}{8}, & 1 \le n < 2 \\
-	\frac{7}{8}, & 2 \le n < 3 \\
-	1, & 3 \le n\\
-\end{cases}
+  F_{X}\brak{n} = \sum_{k = -\infty}^n\comb{3}{k}\brak{\frac{1}{2}}^3 = \begin{cases}
+    0 & x < 0\\
+    \comb{3}{0}\brak{\frac{1}{2}}^3 = \frac{1}{8} & 0 \le x < 1\\
+    \comb{3}{1}\brak{\frac{1}{2}}^3 + \comb{3}{0}\brak{\frac{1}{2}}^3 = \frac{4}{8}& 1 \le x < 2\\
+    \comb{3}{2}\brak{\frac{1}{2}}^3 + \comb{3}{1}\brak{\frac{1}{2}}^3 + \comb{3}{0}\brak{\frac{1}{2}}^3 = \frac{7}{8} & 2 \le x < 3\\
+    \comb{3}{3}\brak{\frac{1}{2}}^3 + \comb{3}{2}\brak{\frac{1}{2}}^3 + \comb{3}{1}\brak{\frac{1}{2}}^3 + \comb{3}{0}\brak{\frac{1}{2}}^3= 1 & 3 \le x\\
+  \end{cases}
 \end{align}
 The probability of getting atmost 2 heads is
 \begin{align}
@@ -118,19 +117,12 @@ The probability of getting atmost 2 heads is
 Simulation:
 \newline
 To run a simulation we need to generate random numbers with uniform probability, which is done
-as shown below(Algorithm taken from OpenSSL's random\_uniform.c):
+as shown below:
 \begin{enumerate}
-  \item \text{Generate 32 bits of entropy using /dev/urandom.}
-  \item Treat this as a fixed point number in the range [0, 1)
-  \item Scale this to desired range using fixed point multiplication and treat as 64bit number(upper 32 bits integer and rest as fractional part)
-  \item Return the integer part of the fixed point numbers
+  \item Generate a random number by calling rand(). It generates a random number between 0 and RANDMAX
+  \item Divide the generated number by RANDMAX so that it becomes a real number in the range [0, 1)
+  \item If the number is less than $p$, take it as event happened, else the event did not happen
 \end{enumerate}
-The following shows how the relative frequency reaches true probability with increasing number of trials of the event.
-\begin{figure}[h!]
-   \centering
-   \includegraphics[width=1\columnwidth]{figs/fig.png}
-    \caption{Relative Frequency tends to True Probability}
-\end{figure}
 \begin{figure}[h!]
    \centering
    \includegraphics[width=1\columnwidth]{figs/pmf.png}
